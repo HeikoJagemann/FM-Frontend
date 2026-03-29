@@ -7,7 +7,7 @@ import { Spieler } from '../models/spieler.model';
   providedIn: 'root'
 })
 export class SpielerService {
-  private apiUrl = 'http://localhost:8080/api/spieler';
+  private apiUrl = 'http://localhost:8081/api/spieler';
 
   constructor(private http: HttpClient) {}
 

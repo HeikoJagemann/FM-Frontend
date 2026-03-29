@@ -7,7 +7,7 @@ import { Verein } from '../models/verein.model';
   providedIn: 'root'
 })
 export class VereinService {
-  private apiUrl = 'http://localhost:8080/api/verein';
+  private apiUrl = 'http://localhost:8081/api/verein';
 
   constructor(private http: HttpClient) {}
 
