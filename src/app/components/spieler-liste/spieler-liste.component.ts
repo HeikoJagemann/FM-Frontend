@@ -73,7 +73,7 @@ export class SpielerListeComponent implements OnInit {
   }
 
   detail(spieler: Spieler): void {
-    this.router.navigate(['/spiel', this.vereinId, 'spieler', spieler.id]);
+    this.router.navigate(['spieler', spieler.id], { relativeTo: this.route });
   }
 
   zurueck(): void {

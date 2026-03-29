@@ -1,0 +1,28 @@
+<div class="layout-wrapper">
+
+  <mat-toolbar class="hauptmenu" color="primary">
+    <button mat-icon-button (click)="zurueck()" matTooltip="Hauptmenu">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <mat-icon style="margin: 0 6px">sports_soccer</mat-icon>
+    <span class="verein-name">{{ vereinName }}</span>
+
+    <span class="spacer"></span>
+
+    @for (item of menu; track item.route) {
+      <button mat-button
+              class="menu-btn"
+              [class.aktiv]="isActive(item)"
+              (click)="navigateTo(item)">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.label }}
+      </button>
+    }
+  </mat-toolbar>
+
+  <div class="inhalt">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

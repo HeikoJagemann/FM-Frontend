@@ -1,0 +1,47 @@
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.hauptmenu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+
+  .verein-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  opacity: 0.8;
+  border-radius: 6px;
+  transition: opacity 0.15s, background 0.15s;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  &.aktiv {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+  }
+}
+
+.inhalt {
+  flex: 1;
+  overflow-y: auto;
+}

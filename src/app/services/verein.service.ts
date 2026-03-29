@@ -19,6 +19,10 @@ export class VereinService {
     return this.http.post<Verein>(this.apiUrl, { name });
   }
 
+  getById(id: number): Observable<Verein> {
+    return this.http.get<Verein>(`${this.apiUrl}/${id}`);
+  }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

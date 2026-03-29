@@ -55,7 +55,7 @@ export class SpielerDetailComponent implements OnInit {
   }
 
   zurueck(): void {
-    this.router.navigate(['/spiel', this.vereinId]);
+    this.router.navigate(['../../'], { relativeTo: this.route });
   }
 
   wertFormatiert(wert: number): string {
