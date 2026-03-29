@@ -1,0 +1,50 @@
+.container {
+  padding: 24px;
+}
+
+.header-card {
+  margin-bottom: 24px;
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.karten-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+.attribut-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 8px;
+}
+
+.attribut {
+  display: grid;
+  grid-template-columns: 140px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+
+  span {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.wert-label {
+  font-weight: bold;
+  text-align: right;
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}

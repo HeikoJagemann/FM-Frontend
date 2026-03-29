@@ -1,0 +1,178 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="zurueck()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span style="margin-left: 8px">Spieler-Detail</span>
+</mat-toolbar>
+
+<div class="container">
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
+
+  @if (!loading && spieler) {
+    <mat-card class="header-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>person</mat-icon>
+        <mat-card-title>{{ spieler.name }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ spieler.alter }} Jahre · {{ spieler.nationalitaet }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="badges">
+          <mat-chip>{{ spieler.position }}</mat-chip>
+          <mat-chip>{{ spieler.kader }}</mat-chip>
+          <mat-chip color="primary" highlighted>Stärke: {{ spieler.staerke }}</mat-chip>
+          <mat-chip>{{ wertFormatiert(spieler.wert) }}</mat-chip>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="karten-grid">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Technik & Bewegung</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="attribut-liste">
+            <div class="attribut">
+              <span>Pass</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.pass"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.pass }}</span>
+            </div>
+            <div class="attribut">
+              <span>Ballkontrolle</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.ballkontrolle"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.ballkontrolle }}</span>
+            </div>
+            <div class="attribut">
+              <span>Schusstechnik</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.schusstechnik"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.schusstechnik }}</span>
+            </div>
+            <div class="attribut">
+              <span>Schussstärke</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.schussstaerke"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.schussstaerke }}</span>
+            </div>
+            <div class="attribut">
+              <span>Dribbling</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.dribbling"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.dribbling }}</span>
+            </div>
+            <div class="attribut">
+              <span>Kopfball</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.kopfball"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.kopfball }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Athletik & Mental</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="attribut-liste">
+            <div class="attribut">
+              <span>Schnelligkeit</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.schnelligkeit"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.schnelligkeit }}</span>
+            </div>
+            <div class="attribut">
+              <span>Ausdauer</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.ausdauer"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.ausdauer }}</span>
+            </div>
+            <div class="attribut">
+              <span>Zweikampf</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.zweikampf"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.zweikampf }}</span>
+            </div>
+            <div class="attribut">
+              <span>Stellungsspiel</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.stellungsspiel"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.stellungsspiel }}</span>
+            </div>
+            <div class="attribut">
+              <span>Entscheidungen</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.entscheidungen"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.entscheidungen }}</span>
+            </div>
+            <div class="attribut">
+              <span>Führungsqualität</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.fuehrungsqualitaet"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.fuehrungsqualitaet }}</span>
+            </div>
+            <div class="attribut">
+              <span>Disziplin</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.disziplin"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.disziplin }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Füße & Talent</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="attribut-liste">
+            <div class="attribut">
+              <span>Linker Fuß</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.linkerFuss"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.linkerFuss }}</span>
+            </div>
+            <div class="attribut">
+              <span>Rechter Fuß</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.rechterFuss"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.rechterFuss }}</span>
+            </div>
+            <div class="attribut">
+              <span>Talent</span>
+              <mat-progress-bar mode="determinate" [value]="spieler.talent"></mat-progress-bar>
+              <span class="wert-label">{{ spieler.talent }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      @if (isTorwart()) {
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Torwart-Attribute</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="attribut-liste">
+              <div class="attribut">
+                <span>Strafraumbeh.</span>
+                <mat-progress-bar mode="determinate" [value]="spieler!.strafraumbeherrschung"></mat-progress-bar>
+                <span class="wert-label">{{ spieler!.strafraumbeherrschung }}</span>
+              </div>
+              <div class="attribut">
+                <span>Fangsicherheit</span>
+                <mat-progress-bar mode="determinate" [value]="spieler!.fangsicherheit"></mat-progress-bar>
+                <span class="wert-label">{{ spieler!.fangsicherheit }}</span>
+              </div>
+              <div class="attribut">
+                <span>Reflexe</span>
+                <mat-progress-bar mode="determinate" [value]="spieler!.reflexe"></mat-progress-bar>
+                <span class="wert-label">{{ spieler!.reflexe }}</span>
+              </div>
+              <div class="attribut">
+                <span>Talent (TW)</span>
+                <mat-progress-bar mode="determinate" [value]="spieler!.talentTW"></mat-progress-bar>
+                <span class="wert-label">{{ spieler!.talentTW }}</span>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</div>
