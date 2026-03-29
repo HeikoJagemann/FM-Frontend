@@ -21,6 +21,7 @@ export const routes: Routes = [
       { path: 'finanzen',  component: FinanzenComponent },
       { path: 'umfeld',    component: UmfeldComponent },
       { path: 'jugend',    component: JugendComponent },
+      { path: 'jugend/spieler/:id', component: SpielerDetailComponent },
     ]
   },
   { path: '**', redirectTo: '' }

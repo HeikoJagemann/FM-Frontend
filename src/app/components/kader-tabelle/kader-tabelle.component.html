@@ -1,0 +1,56 @@
+@if (spieler.length === 0) {
+  <div class="leer-hinweis">
+    <mat-icon>group_off</mat-icon>
+    <p>Keine Spieler in diesem Kader.</p>
+  </div>
+} @else {
+  <table mat-table [dataSource]="spieler" class="mat-elevation-z2 tabelle">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let s">{{ s.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="alter">
+      <th mat-header-cell *matHeaderCellDef>Alter</th>
+      <td mat-cell *matCellDef="let s">{{ s.alter }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef>Position</th>
+      <td mat-cell *matCellDef="let s"><mat-chip>{{ s.position }}</mat-chip></td>
+    </ng-container>
+
+    <ng-container matColumnDef="staerke">
+      <th mat-header-cell *matHeaderCellDef>Stärke</th>
+      <td mat-cell *matCellDef="let s">
+        <span class="staerke"
+              [class.hoch]="s.staerke >= 80"
+              [class.mittel]="s.staerke >= 60 && s.staerke < 80">
+          {{ s.staerke }}
+        </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="wert">
+      <th mat-header-cell *matHeaderCellDef>Marktwert</th>
+      <td mat-cell *matCellDef="let s">{{ wertFormatiert(s.wert) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="aktionen">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let s">
+        <button mat-icon-button color="primary" matTooltip="Details" (click)="detailClick.emit(s)">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Löschen" (click)="onLoeschen(s, $event)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        class="spieler-row" (click)="detailClick.emit(row)"></tr>
+  </table>
+}
