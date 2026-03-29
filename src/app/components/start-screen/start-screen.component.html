@@ -1,0 +1,71 @@
+<div class="start-wrapper">
+
+  <div class="hero">
+    <mat-icon class="hero-icon">sports_soccer</mat-icon>
+    <h1>Fussball-Manager</h1>
+    <p class="subtitle">Wähle ein Spiel oder starte neu</p>
+  </div>
+
+  <div class="inhalt">
+
+    <!-- Neues Spiel -->
+    <mat-card class="aktion-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar color="primary">add_circle</mat-icon>
+        <mat-card-title>Neues Spiel</mat-card-title>
+        <mat-card-subtitle>Vereinsname eingeben und loslegen</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="voll-breit">
+          <mat-label>Vereinsname</mat-label>
+          <mat-icon matPrefix>shield</mat-icon>
+          <input matInput [(ngModel)]="vereinName" placeholder="z.B. FC Musterstadt"
+                 (keyup.enter)="neuesSpielStarten()" />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="primary"
+                [disabled]="!vereinName.trim()"
+                (click)="neuesSpielStarten()">
+          <mat-icon>play_arrow</mat-icon>
+          Spiel starten
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Gespeicherte Spiele -->
+    <mat-card class="aktion-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar>folder_open</mat-icon>
+        <mat-card-title>Spiel laden</mat-card-title>
+        <mat-card-subtitle>Vorhandene Spielstände</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (loading) {
+          <div class="spinner-wrapper">
+            <mat-spinner diameter="32"></mat-spinner>
+          </div>
+        } @else if (vorhandeneSpiele.length === 0) {
+          <p class="leer-hinweis">Keine gespeicherten Spiele vorhanden.</p>
+        } @else {
+          <div class="spiele-liste">
+            @for (spiel of vorhandeneSpiele; track spiel.id) {
+              <div class="spiel-eintrag" (click)="spielLaden(spiel)">
+                <mat-icon>shield</mat-icon>
+                <span class="spiel-name">{{ spiel.name }}</span>
+                <span class="spacer"></span>
+                <button mat-icon-button color="warn"
+                        (click)="spielLoeschen(spiel, $event)"
+                        matTooltip="Löschen">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <mat-icon class="pfeil">chevron_right</mat-icon>
+              </div>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

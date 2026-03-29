@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,15 +31,18 @@ import { Spieler } from '../../models/spieler.model';
 export class SpielerListeComponent implements OnInit {
   spieler: Spieler[] = [];
   loading = false;
+  vereinId!: number;
   displayedColumns = ['name', 'alter', 'position', 'kader', 'staerke', 'wert', 'aktionen'];
 
   constructor(
     private spielerService: SpielerService,
+    private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
+    this.vereinId = Number(this.route.snapshot.paramMap.get('vereinId'));
     this.laden();
   }
 
@@ -70,7 +73,11 @@ export class SpielerListeComponent implements OnInit {
   }
 
   detail(spieler: Spieler): void {
-    this.router.navigate(['/spieler', spieler.id]);
+    this.router.navigate(['/spiel', this.vereinId, 'spieler', spieler.id]);
+  }
+
+  zurueck(): void {
+    this.router.navigate(['/']);
   }
 
   loeschen(spieler: Spieler, event: Event): void {
@@ -84,12 +91,6 @@ export class SpielerListeComponent implements OnInit {
         this.snackBar.open('Fehler beim Löschen', 'OK', { duration: 3000 });
       }
     });
-  }
-
-  staerkeColor(staerke: number): string {
-    if (staerke >= 80) return 'primary';
-    if (staerke >= 60) return 'accent';
-    return '';
   }
 
   wertFormatiert(wert: number): string {

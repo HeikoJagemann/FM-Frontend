@@ -31,6 +31,7 @@ import { Spieler } from '../../models/spieler.model';
 export class SpielerDetailComponent implements OnInit {
   spieler: Spieler | null = null;
   loading = true;
+  vereinId!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +40,9 @@ export class SpielerDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const vereinId = Number(this.route.snapshot.paramMap.get('vereinId'));
     const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.vereinId = vereinId;
     this.spielerService.getById(id).subscribe({
       next: (s) => {
         this.spieler = s;
@@ -52,7 +55,7 @@ export class SpielerDetailComponent implements OnInit {
   }
 
   zurueck(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/spiel', this.vereinId]);
   }
 
   wertFormatiert(wert: number): string {
