@@ -22,8 +22,7 @@ import { Spieler } from '../../models/spieler.model';
 })
 export class KaderTabelleComponent {
   @Input() spieler: Spieler[] = [];
-  @Output() detailClick  = new EventEmitter<Spieler>();
-  @Output() loeschenClick = new EventEmitter<Spieler>();
+  @Output() detailClick = new EventEmitter<Spieler>();
 
   displayedColumns = ['name', 'alter', 'position', 'staerke', 'wert', 'aktionen'];
 
@@ -31,10 +30,5 @@ export class KaderTabelleComponent {
     if (wert >= 1_000_000) return `${(wert / 1_000_000).toFixed(1)}M €`;
     if (wert >= 1_000)     return `${(wert / 1_000).toFixed(0)}K €`;
     return `${wert} €`;
-  }
-
-  onLoeschen(s: Spieler, event: Event): void {
-    event.stopPropagation();
-    this.loeschenClick.emit(s);
   }
 }
