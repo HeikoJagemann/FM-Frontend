@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SpielerService } from '../../services/spieler.service';
@@ -15,8 +13,6 @@ import { Spieler } from '../../models/spieler.model';
   imports: [
     CommonModule,
     MatTabsModule,
-    MatButtonModule,
-    MatIconModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
     KaderTabelleComponent,
@@ -52,13 +48,6 @@ export class SpielerListeComponent implements OnInit {
         this.snackBar.open('Fehler beim Laden', 'OK', { duration: 3000 });
         this.loading = false;
       }
-    });
-  }
-
-  generieren(): void {
-    this.spielerService.generate().subscribe({
-      next: () => { this.snackBar.open('Spieler generiert!', 'OK', { duration: 2000 }); this.laden(); },
-      error: () => { this.snackBar.open('Fehler beim Generieren', 'OK', { duration: 3000 }); }
     });
   }
 
