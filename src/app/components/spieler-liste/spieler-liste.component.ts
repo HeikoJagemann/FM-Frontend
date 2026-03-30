@@ -36,7 +36,7 @@ export class SpielerListeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.vereinId = Number(this.route.snapshot.paramMap.get('vereinId'));
+    this.vereinId = Number(this.route.snapshot.parent?.parent?.paramMap.get('vereinId'));
     this.laden();
   }
 
