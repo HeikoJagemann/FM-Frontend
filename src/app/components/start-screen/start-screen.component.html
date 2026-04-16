@@ -3,69 +3,98 @@
   <div class="hero">
     <mat-icon class="hero-icon">sports_soccer</mat-icon>
     <h1>Fussball-Manager</h1>
-    <p class="subtitle">Wähle ein Spiel oder starte neu</p>
+    <p class="subtitle">Starte deine Karriere als Trainer</p>
   </div>
 
-  <div class="inhalt">
-
-    <!-- Neues Spiel -->
-    <mat-card class="aktion-card">
-      <mat-card-header>
-        <mat-icon mat-card-avatar color="primary">add_circle</mat-icon>
-        <mat-card-title>Neues Spiel</mat-card-title>
-        <mat-card-subtitle>Vereinsname eingeben und loslegen</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-form-field appearance="outline" class="voll-breit">
-          <mat-label>Vereinsname</mat-label>
-          <mat-icon matPrefix>shield</mat-icon>
-          <input matInput [(ngModel)]="vereinName" placeholder="z.B. FC Musterstadt"
-                 (keyup.enter)="neuesSpielStarten()" />
-        </mat-form-field>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-flat-button color="primary"
-                [disabled]="!vereinName.trim()"
+  <!-- ── Zustand: start ─────────────────────────────────── -->
+  @if (zustand === 'start') {
+    <div class="inhalt">
+      <div class="start-card">
+        <mat-icon class="start-card-icon">emoji_events</mat-icon>
+        <h2>Neues Spiel</h2>
+        <p>
+          Du startest als Trainer in der Oberliga. Wähle einen Verein und
+          führe ihn Schritt für Schritt nach oben.
+        </p>
+        <button mat-flat-button color="primary" class="start-btn"
                 (click)="neuesSpielStarten()">
           <mat-icon>play_arrow</mat-icon>
           Spiel starten
         </button>
-      </mat-card-actions>
-    </mat-card>
+      </div>
+    </div>
+  }
 
-    <!-- Gespeicherte Spiele -->
-    <mat-card class="aktion-card">
-      <mat-card-header>
-        <mat-icon mat-card-avatar>folder_open</mat-icon>
-        <mat-card-title>Spiel laden</mat-card-title>
-        <mat-card-subtitle>Vorhandene Spielstände</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        @if (loading) {
-          <div class="spinner-wrapper">
-            <mat-spinner diameter="32"></mat-spinner>
-          </div>
-        } @else if (vorhandeneSpiele.length === 0) {
-          <p class="leer-hinweis">Keine gespeicherten Spiele vorhanden.</p>
-        } @else {
-          <div class="spiele-liste">
-            @for (spiel of vorhandeneSpiele; track spiel.id) {
-              <div class="spiel-eintrag" (click)="spielLaden(spiel)">
+  <!-- ── Zustand: laden ─────────────────────────────────── -->
+  @if (zustand === 'laden') {
+    <div class="inhalt">
+      <div class="laden-card">
+        <mat-icon class="laden-icon">sports_soccer</mat-icon>
+        <h2>Ligenwelt wird aufgebaut</h2>
+        <p class="laden-nachricht">{{ fortschrittNachricht }}</p>
+
+        <div class="progress-wrapper">
+          <mat-progress-bar
+            mode="determinate"
+            [value]="fortschritt"
+            class="progress-bar">
+          </mat-progress-bar>
+          <span class="progress-label">{{ fortschritt }}%</span>
+        </div>
+
+        <div class="ligen-info">
+          <span>1. Bundesliga</span>
+          <span>2. Bundesliga</span>
+          <span>3. Liga</span>
+          <span>Regionalligen</span>
+          <span>Oberligen</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ── Zustand: auswahl ───────────────────────────────── -->
+  @if (zustand === 'auswahl') {
+    <div class="inhalt">
+      <div class="auswahl-header">
+        <mat-icon>shield</mat-icon>
+        <span>Wähle deinen Verein – Oberliga</span>
+      </div>
+      <p class="auswahl-hinweis">
+        Drei zufällige Vereine aus der Oberliga stehen zur Auswahl.
+      </p>
+
+      <div class="vereine-grid">
+        @for (verein of angebote; track verein.id) {
+          <mat-card class="verein-card" (click)="vereinWaehlen(verein)">
+            <mat-card-content>
+              <div class="verein-icon-wrapper">
                 <mat-icon>shield</mat-icon>
-                <span class="spiel-name">{{ spiel.name }}</span>
-                <span class="spacer"></span>
-                <button mat-icon-button color="warn"
-                        (click)="spielLoeschen(spiel, $event)"
-                        matTooltip="Löschen">
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <mat-icon class="pfeil">chevron_right</mat-icon>
               </div>
-            }
-          </div>
+              <h3 class="verein-name">{{ verein.name }}</h3>
+              <div class="liga-badge">{{ verein.liga?.name }}</div>
+              <div class="sterne">
+                @for (s of staerkeSterne(verein.staerke); track $index) {
+                  <mat-icon class="stern">star</mat-icon>
+                }
+              </div>
+              <div class="staerke-label">{{ staerkeLabel(verein.staerke) }}</div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-flat-button color="primary" class="waehlen-btn">
+                <mat-icon>play_arrow</mat-icon>
+                Auswählen
+              </button>
+            </mat-card-actions>
+          </mat-card>
         }
-      </mat-card-content>
-    </mat-card>
+      </div>
 
-  </div>
+      <button mat-stroked-button class="neu-laden-btn" (click)="andereVereine()">
+        <mat-icon>refresh</mat-icon>
+        Andere Vereine anzeigen
+      </button>
+    </div>
+  }
+
 </div>

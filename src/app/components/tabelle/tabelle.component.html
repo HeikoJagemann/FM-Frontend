@@ -1,0 +1,75 @@
+<div class="tabelle-wrapper">
+  <h2 class="liga-titel">{{ ligaName }}</h2>
+
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    <table mat-table [dataSource]="tabelle" class="tabelle-mat">
+
+      <ng-container matColumnDef="platz">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let e" [class.aufstieg]="e.platz <= 2"
+            [class.relegation]="e.platz === 3" [class.abstieg]="e.platz >= tabelle.length - 2">
+          {{ e.platz }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="verein">
+        <th mat-header-cell *matHeaderCellDef>Verein</th>
+        <td mat-cell *matCellDef="let e" [class.mein-verein]="e.verein.id === meinVereinId">
+          <span class="verein-name">{{ e.verein.name }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sp">
+        <th mat-header-cell *matHeaderCellDef>Sp</th>
+        <td mat-cell *matCellDef="let e">{{ e.spiele }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="g">
+        <th mat-header-cell *matHeaderCellDef>G</th>
+        <td mat-cell *matCellDef="let e">{{ e.siege }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="u">
+        <th mat-header-cell *matHeaderCellDef>U</th>
+        <td mat-cell *matCellDef="let e">{{ e.unentschieden }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="n">
+        <th mat-header-cell *matHeaderCellDef>N</th>
+        <td mat-cell *matCellDef="let e">{{ e.niederlagen }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tore">
+        <th mat-header-cell *matHeaderCellDef>Tore</th>
+        <td mat-cell *matCellDef="let e">{{ e.tore }}:{{ e.gegentore }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="td">
+        <th mat-header-cell *matHeaderCellDef>TD</th>
+        <td mat-cell *matCellDef="let e" [class.positiv]="e.tordifferenz > 0"
+            [class.negativ]="e.tordifferenz < 0">
+          {{ e.tordifferenz > 0 ? '+' : '' }}{{ e.tordifferenz }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="pkt">
+        <th mat-header-cell *matHeaderCellDef>Pkt</th>
+        <td mat-cell *matCellDef="let e" class="punkte">{{ e.punkte }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="spalten"></tr>
+      <tr mat-row *matRowDef="let row; columns: spalten;"
+          [class.mein-verein-row]="row.verein.id === meinVereinId"></tr>
+    </table>
+
+    <div class="legende">
+      <span class="dot aufstieg-dot"></span> Aufstieg
+      <span class="dot relegation-dot"></span> Relegation
+      <span class="dot abstieg-dot"></span> Abstieg
+    </div>
+  }
+</div>

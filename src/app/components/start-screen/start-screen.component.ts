@@ -1,90 +1,127 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Subscription, interval, switchMap, takeUntil, Subject } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { VereinService } from '../../services/verein.service';
 import { Verein } from '../../models/verein.model';
+
+type Zustand = 'start' | 'laden' | 'auswahl';
+
+interface Fortschritt {
+  nachricht: string;
+  prozent: number;
+  fertig: boolean;
+}
 
 @Component({
   selector: 'app-start-screen',
   imports: [
     CommonModule,
-    FormsModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
     MatCardModule,
-    MatDividerModule,
-    MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatSnackBarModule,
   ],
   templateUrl: './start-screen.component.html',
   styleUrl: './start-screen.component.scss'
 })
-export class StartScreenComponent implements OnInit {
-  vereinName = '';
-  vorhandeneSpiele: Verein[] = [];
-  loading = false;
-  neuesSpielOffen = false;
+export class StartScreenComponent implements OnDestroy {
+  zustand: Zustand = 'start';
+  fortschritt = 0;
+  fortschrittNachricht = '';
+  angebote: Verein[] = [];
+
+  private readonly destroyed$ = new Subject<void>();
+  private pollingSub?: Subscription;
+
+  private readonly apiBase = 'http://localhost:8081/api/spiel';
 
   constructor(
+    private http: HttpClient,
     private vereinService: VereinService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {
-    this.laden();
-  }
-
-  laden(): void {
-    this.loading = true;
-    this.vereinService.getAll().subscribe({
-      next: (v) => {
-        this.vorhandeneSpiele = v;
-        this.loading = false;
-      },
-      error: () => {
-        this.loading = false;
-      }
-    });
-  }
-
   neuesSpielStarten(): void {
-    if (!this.vereinName.trim()) return;
-    this.vereinService.create(this.vereinName.trim()).subscribe({
-      next: (v) => {
-        this.router.navigate(['/spiel', v.id]);
-      },
+    this.zustand = 'laden';
+    this.fortschritt = 0;
+    this.fortschrittNachricht = 'Starte...';
+
+    this.http.post(`${this.apiBase}/initialisieren`, {}).subscribe({
+      next: () => this.startePolling(),
       error: () => {
-        this.snackBar.open('Fehler beim Erstellen des Spiels', 'OK', { duration: 3000 });
+        this.zustand = 'start';
+        this.snackBar.open('Backend nicht erreichbar', 'OK', { duration: 4000 });
       }
     });
   }
 
-  spielLaden(verein: Verein): void {
+  private startePolling(): void {
+    this.pollingSub = interval(600).pipe(
+      switchMap(() => this.http.get<Fortschritt>(`${this.apiBase}/fortschritt`)),
+      takeUntil(this.destroyed$)
+    ).subscribe({
+      next: (dto) => {
+        this.fortschritt = dto.prozent;
+        this.fortschrittNachricht = dto.nachricht;
+        if (dto.fertig) {
+          this.stoppePolling();
+          this.ladeAngebote();
+        }
+      },
+      error: () => {
+        this.stoppePolling();
+        this.zustand = 'start';
+        this.snackBar.open('Fehler beim Laden des Fortschritts', 'OK', { duration: 4000 });
+      }
+    });
+  }
+
+  private stoppePolling(): void {
+    this.pollingSub?.unsubscribe();
+  }
+
+  private ladeAngebote(): void {
+    this.vereinService.getOberligaAngebote().subscribe({
+      next: (v) => {
+        this.angebote = v;
+        this.zustand = 'auswahl';
+      },
+      error: () => {
+        this.zustand = 'start';
+        this.snackBar.open('Fehler beim Laden der Vereinsangebote', 'OK', { duration: 4000 });
+      }
+    });
+  }
+
+  andereVereine(): void {
+    this.ladeAngebote();
+  }
+
+  vereinWaehlen(verein: Verein): void {
     this.router.navigate(['/spiel', verein.id]);
   }
 
-  spielLoeschen(verein: Verein, event: Event): void {
-    event.stopPropagation();
-    this.vereinService.delete(verein.id).subscribe({
-      next: () => {
-        this.snackBar.open(`"${verein.name}" gelöscht`, 'OK', { duration: 2000 });
-        this.laden();
-      },
-      error: () => {
-        this.snackBar.open('Fehler beim Löschen', 'OK', { duration: 3000 });
-      }
-    });
+  staerkeSterne(staerke: number): number[] {
+    return Array(Math.min(5, Math.max(1, Math.round(staerke / 20)))).fill(0);
+  }
+
+  staerkeLabel(staerke: number): string {
+    if (staerke >= 28) return 'Stark';
+    if (staerke >= 24) return 'Mittel';
+    return 'Aufbauend';
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 }

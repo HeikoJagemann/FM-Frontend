@@ -1,0 +1,45 @@
+<div class="ergebnisse-wrapper">
+  <h2 class="liga-titel">{{ ligaName }} – Spielplan</h2>
+
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    <mat-accordion multi>
+      @for (spieltag of spieltage; track spieltag.nr) {
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ spieltag.nr }}. Spieltag
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ spieltag.spiele[0]?.gespielt ? 'Gespielt' : 'Geplant' }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="spiele-liste">
+            @for (spiel of spieltag.spiele; track spiel.id) {
+              <div class="spiel-zeile"
+                   [class.mein-spiel]="spiel.heimVerein.id === meinVereinId || spiel.gastVerein.id === meinVereinId">
+                <span class="verein heim" [class.fett]="spiel.heimVerein.id === meinVereinId">
+                  {{ spiel.heimVerein.name }}
+                </span>
+                <span class="ergebnis">
+                  @if (spiel.gespielt) {
+                    {{ spiel.heimTore }} : {{ spiel.gastTore }}
+                  } @else {
+                    –:–
+                  }
+                </span>
+                <span class="verein gast" [class.fett]="spiel.gastVerein.id === meinVereinId">
+                  {{ spiel.gastVerein.name }}
+                </span>
+              </div>
+            }
+          </div>
+        </mat-expansion-panel>
+      }
+    </mat-accordion>
+  }
+</div>

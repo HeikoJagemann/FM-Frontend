@@ -1,0 +1,49 @@
+.statistiken-wrapper {
+  padding: 24px;
+  max-width: 1000px;
+}
+
+.liga-titel {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 24px;
+  color: #1a237e;
+}
+
+.kacheln {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.kachel {
+  mat-card-content { padding-top: 8px; }
+}
+
+.stat-zeile {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  .label { color: #666; }
+  .wert { font-weight: 700; }
+}
+
+.rang-zeile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+
+  .rang { color: #999; width: 24px; }
+  .name { flex: 1; font-size: 0.9rem; }
+  .zahl { font-weight: 700; color: #1a237e; white-space: nowrap; }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}

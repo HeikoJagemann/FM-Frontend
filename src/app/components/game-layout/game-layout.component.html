@@ -6,13 +6,31 @@
     </button>
 
     @for (item of menu; track item.route) {
-      <button mat-button
-              class="menu-btn"
-              [class.aktiv]="isActive(item)"
-              (click)="navigateTo(item)">
-        <mat-icon>{{ item.icon }}</mat-icon>
-        {{ item.label }}
-      </button>
+      @if (item.children) {
+        <button mat-button
+                class="menu-btn"
+                [class.aktiv]="isActive(item)"
+                [matMenuTriggerFor]="dropdown">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+        <mat-menu #dropdown="matMenu">
+          @for (child of item.children; track child.route) {
+            <button mat-menu-item (click)="navigateTo(child.route)">
+              {{ child.label }}
+            </button>
+          }
+        </mat-menu>
+      } @else {
+        <button mat-button
+                class="menu-btn"
+                [class.aktiv]="isActive(item)"
+                (click)="navigateTo(item.route)">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          {{ item.label }}
+        </button>
+      }
     }
 
     <span class="spacer"></span>

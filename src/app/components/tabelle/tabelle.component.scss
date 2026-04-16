@@ -1,0 +1,58 @@
+.tabelle-wrapper {
+  padding: 24px;
+  max-width: 900px;
+}
+
+.liga-titel {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0 0 20px;
+  color: #1a237e;
+}
+
+.tabelle-mat {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+  th { font-weight: 700; font-size: 0.85rem; color: #555; }
+  td, th { padding: 10px 16px; }
+
+  .verein-name { font-weight: 500; }
+  .punkte { font-weight: 700; }
+  .positiv { color: #2e7d32; }
+  .negativ { color: #c62828; }
+
+  .aufstieg { border-left: 4px solid #1565c0; }
+  .relegation { border-left: 4px solid #f57f17; }
+  .abstieg { border-left: 4px solid #b71c1c; }
+
+  .mein-verein { font-weight: 700; color: #1a237e; }
+  .mein-verein-row { background: #e8eaf6; }
+}
+
+.legende {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  font-size: 0.78rem;
+  color: #666;
+
+  .dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+  }
+  .aufstieg-dot { background: #1565c0; }
+  .relegation-dot { background: #f57f17; }
+  .abstieg-dot { background: #b71c1c; }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}

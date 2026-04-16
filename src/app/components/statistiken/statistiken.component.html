@@ -1,0 +1,76 @@
+<div class="statistiken-wrapper">
+  <h2 class="liga-titel">{{ ligaName }} – Statistiken</h2>
+
+  @if (loading) {
+    <div class="spinner-wrapper">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  } @else {
+    <div class="kacheln">
+      <mat-card class="kachel">
+        <mat-card-header>
+          <mat-card-title>Gesamt</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-zeile">
+            <span class="label">Gespielte Partien</span>
+            <span class="wert">{{ gesamtSpiele }}</span>
+          </div>
+          <div class="stat-zeile">
+            <span class="label">Erzielte Tore</span>
+            <span class="wert">{{ gesamtTore }}</span>
+          </div>
+          <div class="stat-zeile">
+            <span class="label">Tore pro Spiel</span>
+            <span class="wert">{{ gesamtSpiele > 0 ? (gesamtTore / gesamtSpiele | number:'1.1-1') : '–' }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="kachel">
+        <mat-card-header>
+          <mat-card-title>Treffsicherste Vereine</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @for (e of treffsichersteVereine; track e.verein.id) {
+            <div class="rang-zeile">
+              <span class="rang">{{ $index + 1 }}.</span>
+              <span class="name">{{ e.verein.name }}</span>
+              <span class="zahl">{{ e.tore }} Tore</span>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="kachel">
+        <mat-card-header>
+          <mat-card-title>Beste Abwehren</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @for (e of besteAbwehren; track e.verein.id) {
+            <div class="rang-zeile">
+              <span class="rang">{{ $index + 1 }}.</span>
+              <span class="name">{{ e.verein.name }}</span>
+              <span class="zahl">{{ e.gegentore }} Gegentore</span>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="kachel">
+        <mat-card-header>
+          <mat-card-title>Meiste Siege</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @for (e of meisteSiege; track e.verein.id) {
+            <div class="rang-zeile">
+              <span class="rang">{{ $index + 1 }}.</span>
+              <span class="name">{{ e.verein.name }}</span>
+              <span class="zahl">{{ e.siege }} Siege</span>
+            </div>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

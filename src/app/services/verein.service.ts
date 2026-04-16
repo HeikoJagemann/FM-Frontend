@@ -23,6 +23,10 @@ export class VereinService {
     return this.http.get<Verein>(`${this.apiUrl}/${id}`);
   }
 
+  getOberligaAngebote(): Observable<Verein[]> {
+    return this.http.get<Verein[]>(`${this.apiUrl}/oberliga/zufaellig`);
+  }
+
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }

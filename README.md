@@ -1,59 +1,71 @@
-# FMFrontend
+# Fussball-Manager Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.0.
+Angular-Frontend für den Fussball-Manager.
 
-## Development server
+> **Empfohlen:** Die Anwendung über das Startup-Skript im
+> [FM-Backend](https://github.com/HeikoJagemann/fm-backend) starten —
+> es übernimmt Datenbank, Backend und Frontend automatisch.
 
-To start a local development server, run:
+## Voraussetzungen
+
+- Node.js 18+
+- Angular CLI 19 (`npm install -g @angular/cli`)
+- [FM-Backend](https://github.com/HeikoJagemann/fm-backend) läuft auf Port 8081
+
+## Entwicklungsserver starten
 
 ```bash
+cd D:\git\FM-Frontend
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+App erreichbar unter `http://localhost:4200`.
 
-## Code scaffolding
+## Funktionsumfang
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Startbildschirm
+- **Spiel starten** löst die Liga-Generierung im Backend aus
+- Fortschrittsanzeige (Progressbar) während die Ligen aufgebaut werden
+- Auswahl aus 3 zufälligen Oberliga-Vereinen als Einstieg
 
-```bash
-ng generate component component-name
+### In-Game-Menü
+| Bereich | Unterseiten |
+|---------|-------------|
+| Mannschaft | Kader, Aufstellung |
+| Liga | Tabelle, Spielplan, Statistiken |
+| Training | — |
+| Finanzen | — |
+| Umfeld | — |
+| Jugend | — |
+
+### Liga-Bereich
+- **Tabelle:** Platz, Verein, Sp/G/U/N, Tore, Tordifferenz, Punkte
+- **Spielplan:** Alle Spieltage mit Ergebnissen, ungespielt als „–:–"
+- **Statistiken:** Gesamt-Übersicht, treffsicherste/beste Abwehr/meiste Siege
+
+## Projektstruktur
+
+```
+src/app/
+├── components/
+│   ├── start-screen/        ← Startbildschirm mit Vereinsauswahl
+│   ├── game-layout/         ← Hauptlayout mit Menüleiste
+│   ├── mannschaft-layout/   ← Layout für Mannschafts-Unterseiten
+│   ├── liga-layout/         ← Layout für Liga-Unterseiten
+│   ├── spieler-liste/       ← Kadertabelle
+│   ├── spieler-detail/      ← Spieler-Detailansicht
+│   ├── aufstellung/         ← Aufstellungseditor
+│   ├── tabelle/             ← Ligatabelle
+│   ├── ergebnisse/          ← Spielplan & Ergebnisse
+│   └── statistiken/         ← Liga-Statistiken
+├── models/                  ← TypeScript-Interfaces (Verein, Liga, Spiel, ...)
+└── services/                ← HTTP-Services (VereinService, LigaService, ...)
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+## Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Build-Artefakte landen im Verzeichnis `dist/`.
