@@ -23,6 +23,7 @@ import { Spieler } from '../../models/spieler.model';
 export class JugendComponent implements OnInit {
   alle:    Spieler[] = [];
   loading  = false;
+  vereinId!: number;
 
   get jugendA() { return this.alle.filter(s => s.kader === 'JugendA'); }
   get jugendB() { return this.alle.filter(s => s.kader === 'JugendB'); }
@@ -36,12 +37,13 @@ export class JugendComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.vereinId = Number(this.route.snapshot.parent?.paramMap.get('vereinId'));
     this.laden();
   }
 
   laden(): void {
     this.loading = true;
-    this.spielerService.getAll().subscribe({
+    this.spielerService.getByVerein(this.vereinId).subscribe({
       next: (data) => { this.alle = data; this.loading = false; },
       error: () => {
         this.snackBar.open('Fehler beim Laden', 'OK', { duration: 3000 });

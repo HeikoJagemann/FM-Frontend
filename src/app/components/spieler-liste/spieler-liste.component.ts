@@ -42,7 +42,7 @@ export class SpielerListeComponent implements OnInit {
 
   laden(): void {
     this.loading = true;
-    this.spielerService.getAll().subscribe({
+    this.spielerService.getByVerein(this.vereinId).subscribe({
       next: (data) => { this.alle = data; this.loading = false; },
       error: () => {
         this.snackBar.open('Fehler beim Laden', 'OK', { duration: 3000 });

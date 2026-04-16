@@ -15,6 +15,10 @@ export class SpielerService {
     return this.http.get<Spieler[]>(this.apiUrl);
   }
 
+  getByVerein(vereinId: number): Observable<Spieler[]> {
+    return this.http.get<Spieler[]>(`http://localhost:8081/api/verein/${vereinId}/spieler`);
+  }
+
   getById(id: number): Observable<Spieler> {
     return this.http.get<Spieler>(`${this.apiUrl}/${id}`);
   }
